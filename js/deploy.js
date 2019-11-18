@@ -42,6 +42,22 @@ async function deploy() {
         }
     };
 
+    var safeMathContract = fs.readFileSync(path.resolve(__dirname, "../contract/") + "/" + 'SafeMath.sol', 'utf-8');
+    var IExtendedERC20Contract = fs.readFileSync(path.resolve(__dirname, "../contract/") + "/" + 'IExtendedERC20.sol', 'utf-8');
+
+    function findImports(pathsol) {
+        if (pathsol === 'SafeMath.sol')
+            return { contents: safeMathContract };
+        else if (pathsol == 'IExtendedERC20.sol')
+            return { contents: IExtendedERC20Contract };
+        else return { error: 'File not found' };
+    }
+
+    var output = JSON.parse(solc.compile(JSON.stringify(input), findImports));
+    var abi = output.contracts[contractName + ".sol"][contractName].abi;
+    var bin = output.contracts[contractName + ".sol"][contractName].evm.bytecode.object;
+
+
     // var input = {
     //     language: 'Solidity',
     //     sources: {
@@ -64,29 +80,9 @@ async function deploy() {
     //         }
     //     }
     // };
-
-    var safeMathContract = fs.readFileSync(path.resolve(__dirname, "../contract/") + "/" + 'SafeMath.sol', 'utf-8');
-    var IExtendedERC20Contract = fs.readFileSync(path.resolve(__dirname, "../contract/") + "/" + 'IExtendedERC20.sol', 'utf-8');
-    // console.log('safeMathContract', safeMathContract);
-    // console.log('IExtendedERC20Contract', IExtendedERC20Contract);
-
-    function findImports(pathsol) {
-        if (pathsol === 'SafeMath.sol')
-            return { contents: safeMathContract };
-        else if (pathsol == 'IExtendedERC20.sol')
-            return { contents: IExtendedERC20Contract };
-        else return { error: 'File not found' };
-    }
-
-    var output = JSON.parse(solc.compile(JSON.stringify(input), findImports));
-    var abi = output.contracts[contractName + ".sol"][contractName].abi;
-    var bin = output.contracts[contractName + ".sol"][contractName].evm.bytecode.object;
-
-
     // var output = JSON.parse(solc.compile(JSON.stringify(input)));
     // var abi = output.contracts["TestToken.sol"]['TokenDemo'].abi;
     // var bin = output.contracts["TestToken.sol"]['TokenDemo'].evm.bytecode.object;
-
 
     // deployWithMc(abi, bin);
     // return
