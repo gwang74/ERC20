@@ -87,8 +87,8 @@ async function deploy() {
     // deployWithMc(abi, bin);
     // return
 
-    var name = 'test for standard erc20 token';
-    var symbol = 'TFSERC20';
+    var name = 'standard erc20 token';
+    var symbol = 'SDET';
     var decimals = 18;
     var totalSupply = 123456;
     var types = ['string', 'string', 'uint8', 'uint256'];
@@ -143,8 +143,8 @@ function getNonce(src) {
 }
 
 function deployWithMc(abi, bin) {
-    var name = 'test for standard erc20 token';
-    var symbol = 'TFSE2';
+    var name = 'standard erc20 token';
+    var symbol = 'SERT';
     var decimals = 18;
     var totalSupply = 123456;
     // console.log('abi', abi);
